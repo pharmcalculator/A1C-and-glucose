@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>A1C and Glucose Conversion Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            text-align: center;
+        }
+
+        .attention {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>A1C and Glucose Conversion Calculator</h1>
+        <form onsubmit="convertA1C(event)">
+            <label for="a1c">A1C (%):</label>
+            <input type="number" id="a1c" min="4" max="12" step="0.1" required>
+
+            <input type="submit" value="Convert">
+
+            <p class="result" id="result"></p>
+        </form>
+    </div>
+
+    <script>
+        function convertA1C(event) {
+            event.preventDefault();
+
+            const a1cInput = document.getElementById("a1c");
+            const resultElement = document.getElementById("result");
+
+            const a1c = parseFloat(a1cInput.value);
+
+            if (!isNaN(a1c) && a1c >= 4 && a1c <= 12) {
+                let glucoseRange;
+                let condition;
+
+                if (a1c < 5.7) {
+                    glucoseRange = "Normal (70-130 mg/dL)";
+                    condition = "Normal Blood Sugar";
+                } else if (a1c >= 5.7 && a1c < 6.5) {
+                    glucoseRange = "Prediabetes (100-125 mg/dL)";
+                    condition = "High Blood Sugar (Prediabetes)";
+                } else if (a1c >= 6.5) {
+                    glucoseRange = "Diabetes (≥126 mg/dL)";
+                    condition = "Very High Blood Sugar (Diabetes)";
+                }
+
+                resultElement.textContent = `A1C ${a1c}% is equivalent to ${glucoseRange}. This indicates ${condition}.`;
+
+                if (a1c >= 9) {
+                    resultElement.innerHTML += "<p class='attention'>Attention: A1C levels above 9% require urgent medical attention.</p>";
+                }
+            } else {
+                resultElement.textContent = "Please enter a valid A1C value between 4% and 12%.";
+            }
+        }
+    </script>
+</body>
+</html>
